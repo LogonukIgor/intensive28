@@ -2,7 +2,7 @@ package by.logonuk.hw1;
 
 import java.util.Comparator;
 
-public class ComparatorForTest implements Comparator<Integer> {
+public class ComparatorForSorting implements Comparator<Integer> {
 
     @Override
     public int compare(Integer o1, Integer o2) {

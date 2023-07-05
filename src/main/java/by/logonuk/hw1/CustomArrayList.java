@@ -6,9 +6,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CustomArrayList<E> {
+public class CustomArrayList<E> implements CustomList<E> {
 
-    private static final int DEFAULT_CAPACITY = 10;
     private E[] array;
     private int size;
 
@@ -35,11 +34,13 @@ public class CustomArrayList<E> {
         }
     }
 
+    @Override
     public void add(E object) {
         addValidation();
         array[size++] = object;
     }
 
+    @Override
     public void add(int index, E object) {
         addValidation();
         System.arraycopy(array, index, array, index + 1, array.length - index - 1);
@@ -47,6 +48,7 @@ public class CustomArrayList<E> {
         size++;
     }
 
+    @Override
     public void addAll(Collection<? extends E> c) {
         while (size + c.size() >= array.length) {
             grow();
@@ -57,26 +59,18 @@ public class CustomArrayList<E> {
         }
     }
 
-    public void clear() {
-        int arrayLength = this.array.length;
-        size = 0;
-        this.array = (E[]) new Object[arrayLength];
-    }
-
     private void grow() {
         E[] tempArray = (E[]) new Object[array.length * 2 + 1];
         System.arraycopy(array, 0, tempArray, 0, array.length);
         this.array = tempArray;
     }
 
+    @Override
     public E get(int i) {
         return array[i];
     }
 
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
+    @Override
     public void remove(int index) {
         if (index < array.length && index >= 0) {
             System.arraycopy(array, index + 1, array, index, array.length - index - 1);
@@ -84,6 +78,7 @@ public class CustomArrayList<E> {
         }
     }
 
+    @Override
     public void remove(E element) {
         for (int i = 0; i < size; i++) {
             if (array[i] != null && array[i].equals(element)) {
@@ -94,6 +89,7 @@ public class CustomArrayList<E> {
         }
     }
 
+    @Override
     public void sort(Comparator<? super E> c) {
         quicksort(0, size - 1, c);
     }
@@ -131,6 +127,19 @@ public class CustomArrayList<E> {
         }
     }
 
+    @Override
+    public void clear() {
+        int arrayLength = this.array.length;
+        size = 0;
+        this.array = (E[]) new Object[arrayLength];
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    @Override
     public int size() {
         return this.size;
     }

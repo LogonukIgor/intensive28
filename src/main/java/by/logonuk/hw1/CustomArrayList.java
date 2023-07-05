@@ -1,151 +1,72 @@
 package by.logonuk.hw1;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 
-public class CustomArrayList<E> implements CustomList<E> {
+public interface CustomArrayList<E> {
 
-    private E[] array;
-    private int size;
+    // Default initial array size
+    int DEFAULT_CAPACITY = 10;
 
-    public CustomArrayList() {
-        super();
-        this.array = (E[]) new Object[DEFAULT_CAPACITY];
-    }
+    // Appends the specified element to the end of this list.
+    void add(E object);
 
-    public CustomArrayList(Collection<? extends E> c) {
-        super();
-        this.array = (E[]) new Object[DEFAULT_CAPACITY];
-        while (size + c.size() >= array.length) {
-            grow();
-        }
-        List<? extends E> collect = c.stream().collect(Collectors.toList());
-        for (int i = 0; i < c.size(); i++) {
-            array[size++] = collect.get(i);
-        }
-    }
+    /*
+     * Inserts the specified element at the specified position in this list.
+     * Shifts the element currently at that position (if any) and any subsequent elements
+     * to the right (adds one to their indices).
+     */
+    void add(int index, E object);
 
-    private void addValidation() {
-        if (size >= array.length) {
-            grow();
-        }
-    }
+    /*
+     * Appends all of the elements in the specified collection to the end of this list,
+     * in the order that they are returned by the specified collection's iterator.
+     * The behavior of this operation is undefined if the specified collection is modified while the operation
+     * is in progress. (Note that this will occur if the specified collection is this list, and it's nonempty).
+     */
+    void addAll(Collection<? extends E> c);
 
-    @Override
-    public void add(E object) {
-        addValidation();
-        array[size++] = object;
-    }
+    /*
+     * Returns the element at the specified position in this list.
+     * Params: index – index of the element to return
+     * Returns: the element at the specified position in this list
+     * Throws: IndexOutOfBoundsException – if the index is out of range (index < 0 || index >= size())
+     */
+    E get(int i);
 
-    @Override
-    public void add(int index, E object) {
-        addValidation();
-        System.arraycopy(array, index, array, index + 1, array.length - index - 1);
-        array[index] = object;
-        size++;
-    }
+    /*
+     * Removes the element at the specified position in this list.
+     * Shifts any subsequent elements to the left (subtracts one from their indices).
+     * Returns the element that was removed from the list.
+     * Params: index – the index of the element to be removed
+     */
+    void remove(int index);
 
-    @Override
-    public void addAll(Collection<? extends E> c) {
-        while (size + c.size() >= array.length) {
-            grow();
-        }
-        List<? extends E> collect = c.stream().collect(Collectors.toList());
-        for (int i = 0; i < c.size(); i++) {
-            array[size++] = collect.get(i);
-        }
-    }
+    /*
+     * Removes the first occurrence of the specified element from this list, if it is present.
+     * If this list does not contain the element, it is unchanged. More formally,
+     * removes the element with the lowest index i such that Objects.equals(o, get(i)) (if such an element exists).
+     * Returns true if this list contained the specified element
+     * (or equivalently, if this list changed as a result of the call).
+     * Params: E element – element to be removed from this list, if present
+     */
+    void remove(E element);
 
-    private void grow() {
-        E[] tempArray = (E[]) new Object[array.length * 2 + 1];
-        System.arraycopy(array, 0, tempArray, 0, array.length);
-        this.array = tempArray;
-    }
+    /*
+     * Data sorting
+     * Params: Comparator - to set the sort rule
+     */
+    void sort(Comparator<? super E> c);
 
-    @Override
-    public E get(int i) {
-        return array[i];
-    }
+    /*
+     * Removes all of the elements from this list.
+     * The list will be empty after this call returns.
+     */
+    void clear();
 
-    @Override
-    public void remove(int index) {
-        if (index < array.length && index >= 0) {
-            System.arraycopy(array, index + 1, array, index, array.length - index - 1);
-            this.size--;
-        }
-    }
+    // Returns:true if this list contains no elements
+    boolean isEmpty();
 
-    @Override
-    public void remove(E element) {
-        for (int i = 0; i < size; i++) {
-            if (array[i] != null && array[i].equals(element)) {
-                System.arraycopy(array, i + 1, array, i, array.length - i - 1);
-                this.size--;
-                break;
-            }
-        }
-    }
-
-    @Override
-    public void sort(Comparator<? super E> c) {
-        quicksort(0, size - 1, c);
-    }
-
-    private void quicksort(int startIndex, int endIndex, Comparator<? super E> c) {
-        if (startIndex < endIndex) {
-            int pivotIndex = partition(startIndex, endIndex, c);
-            quicksort(startIndex, pivotIndex, c);
-            quicksort(pivotIndex + 1, endIndex, c);
-        }
-    }
-
-    private int partition(int startIndex, int endIndex, Comparator<? super E> c) {
-        int pivotIndex = (startIndex + endIndex) / 2;
-        E pivotValue = array[pivotIndex];
-        startIndex--;
-        endIndex++;
-
-        while (true) {
-
-            do {
-                startIndex++;
-            } while (c.compare(array[startIndex], pivotValue) < 0);
-
-            do {
-                endIndex--;
-            } while (c.compare(array[endIndex], pivotValue) > 0);
-
-            if (startIndex >= endIndex) return endIndex;
-
-            E temp = array[startIndex];
-            array[startIndex] = array[endIndex];
-            array[endIndex] = temp;
-
-        }
-    }
-
-    @Override
-    public void clear() {
-        int arrayLength = this.array.length;
-        size = 0;
-        this.array = (E[]) new Object[arrayLength];
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    @Override
-    public int size() {
-        return this.size;
-    }
-
-    @Override
-    public String toString() {
-        return Arrays.toString(array);
-    }
+    // Returns: the number of elements in this list
+    int size();
 }

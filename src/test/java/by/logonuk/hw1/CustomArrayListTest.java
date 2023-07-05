@@ -1,5 +1,6 @@
 package by.logonuk.hw1;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -8,20 +9,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CustomArrayListTest {
 
-    private final CustomArrayList customArrayList;
+    private CustomArrayListImpl customArrayList;
 
-    CustomArrayListTest() {
-        this.customArrayList = new CustomArrayList();
+    @BeforeEach
+    public void setCustomArrayList(){
+        this.customArrayList = new CustomArrayListImpl();
     }
 
     @Test
     void add_elementWithAndWithoutIndex_success() {
         // given
-        List<Integer> list = List.of(1, 2);
         customArrayList.add(1);
         customArrayList.add(1, 2);
         // when
-        assertEquals(list.size(), customArrayList.size());
+        assertEquals(2, customArrayList.size());
     }
 
     @Test
@@ -77,8 +78,10 @@ class CustomArrayListTest {
 
     @Test
     void sort_ascendingQuickSort_success() {
+        // given
         customArrayList.addAll(List.of(4, 3, 6, 9, 10, 2, 5, 8, 7));
         customArrayList.sort(new ComparatorForSorting());
+        //when
         assertEquals("[2, 3, 4, 5, 6, 7, 8, 9, 10, null]", customArrayList.toString());
     }
 

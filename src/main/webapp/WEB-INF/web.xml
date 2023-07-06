@@ -1,0 +1,36 @@
+<web-app id="WebApp_ID" version="2.4"
+         xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+   http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+    <servlet>
+        <servlet-name>UserServlet</servlet-name>
+        <servlet-class>by.logonuk.controller.UserController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>UserServlet</servlet-name>
+        <url-pattern>/users</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ProductServlet</servlet-name>
+        <servlet-class>by.logonuk.controller.ProductController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ProductServlet</servlet-name>
+        <url-pattern>/product</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DealServlet</servlet-name>
+        <servlet-class>by.logonuk.controller.DealController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>DealServlet</servlet-name>
+        <url-pattern>/deal</url-pattern>
+    </servlet-mapping>
+</web-app>
